@@ -1,7 +1,6 @@
-if [[ -n "${TZ}" ]]; then
-  echo "Setting timezone to ${TZ}"
-  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-fi
+#!/bin/bash
+
+DBDIR=/root/.chia
 
 cd /chia-blockchain
 
@@ -9,18 +8,23 @@ cd /chia-blockchain
 
 chia init
 
-if [[ ${keys} == "generate" ]]; then
-  echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  chia keys generate
-elif [[ ${keys} == "copy" ]]; then
-  if [[ -z ${ca} ]]; then
-    echo "A path to a copy of the farmer peer's ssl/ca required."
-	exit
-  else
-  chia init -c ${ca}
-  fi
-else
-  chia keys add -f ${keys}
+if [[ ! -d $DBDIR ]]; then
+    if [[ ${keys} == "generate" ]]; then
+      echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
+      chia keys generate
+    elif [[ ${keys} == "copy" ]]; then
+      if [[ -z ${ca} ]]; then
+        echo "A path to a copy of the farmer peer's ssl/ca required."
+        exit
+      else
+      chia init -c ${ca}
+      fi
+    elif [[ ${keys} == "type" ]]; then
+      echo "Call from docker shell: chia keys add"
+      echo "Restart the container after mnemonic input"
+    else
+      chia keys add -f ${keys}
+    fi
 fi
 
 for p in ${plots_dir//:/ }; do
