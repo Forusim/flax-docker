@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG BRANCH="latest"
+ARG BRANCH="main"
 
 EXPOSE 6888
 
@@ -11,9 +11,7 @@ ENV farmer="false"
 ENV plots_dir="/plots"
 ENV farmer_address="null"
 ENV farmer_port="null"
-ENV testnet="false"
 ENV full_node_port="null"
-ENV TZ="UTC"
 
 RUN apt-get update \
  && apt-get install -y tzdata ca-certificates git lsb-release sudo nano
@@ -24,9 +22,8 @@ RUN git clone --branch ${BRANCH} https://github.com/Flax-Network/flax-blockchain
  && . ./activate && flax init
 
 ENV PATH=/flax-blockchain/venv/bin/:$PATH
-WORKDIR /flax-blockchain
 
-VOLUME /config
+WORKDIR /flax-blockchain
 
 COPY ./entrypoint.sh entrypoint.sh
 ENTRYPOINT ["bash", "./entrypoint.sh"]
