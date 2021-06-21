@@ -21,7 +21,7 @@ RUN apt-get update \
 RUN git clone --branch ${BRANCH} https://github.com/Flax-Network/flax-blockchain.git --recurse-submodules \
  && cd flax-blockchain \
  && chmod +x install.sh && ./install.sh \
- && . ./activate && chia init
+ && . ./activate && flax init
 
 ENV PATH=/flax-blockchain/venv/bin/:$PATH
 WORKDIR /flax-blockchain
