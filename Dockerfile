@@ -3,8 +3,7 @@ FROM ubuntu:latest
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG BRANCH="latest"
 
-EXPOSE 8555
-EXPOSE 8444
+EXPOSE 6888
 
 ENV keys="generate"
 ENV harvester="false"
@@ -17,15 +16,15 @@ ENV full_node_port="null"
 ENV TZ="UTC"
 
 RUN apt-get update \
- && apt-get install -y curl jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils apt nfs-common python-is-python3 vim tzdata
+ && apt-get install -y tzdata ca-certificates git lsb-release sudo nano
 
-RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git --recurse-submodules \
- && cd chia-blockchain \
+RUN git clone --branch ${BRANCH} https://github.com/Flax-Network/flax-blockchain.git --recurse-submodules \
+ && cd flax-blockchain \
  && chmod +x install.sh && ./install.sh \
  && . ./activate && chia init
 
-ENV PATH=/chia-blockchain/venv/bin/:$PATH
-WORKDIR /chia-blockchain
+ENV PATH=/flax-blockchain/venv/bin/:$PATH
+WORKDIR /flax-blockchain
 
 VOLUME /config
 
