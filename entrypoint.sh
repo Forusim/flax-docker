@@ -9,7 +9,7 @@ cd /flax-blockchain
 if [[ ! -d $DBDIR ]]; then
     if [[ ${keys} == "generate" ]]; then
       echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-      flax keys generate
+      flax init && flax keys generate
     elif [[ ${keys} == "copy" ]]; then
       if [[ -z ${ca} ]]; then
         echo "A path to a copy of the farmer peer's ssl/ca required."
@@ -21,7 +21,7 @@ if [[ ! -d $DBDIR ]]; then
       echo "Call from docker shell: flax keys add"
       echo "Restart the container after mnemonic input"
     else
-      flax keys add -f ${keys}
+      flax init && flax keys add -f ${keys}
     fi
 else
     for p in ${plots_dir//:/ }; do
