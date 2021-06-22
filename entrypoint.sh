@@ -1,12 +1,10 @@
 #!/bin/bash
 
-DBDIR=/root/.flax/mainnet/db
-
 cd /flax-blockchain
 
 . ./activate
 
-if [[ ! -d $DBDIR ]]; then
+if [[ $(flax keys show | wc -l) -ge 5 ]]; then
     if [[ ${keys} == "generate" ]]; then
       echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
       flax init && flax keys generate
