@@ -5,6 +5,7 @@ https://flaxnetwork.org/
 
 ## Configuration
 Required configuration:
+* Publish network port via `-p 6888:6888`
 * Bind mounting a host plot dir in the container to `/plots`  (e.g. `-v /path/to/hdd/storage/:/plots`)
 * Bind mounting a host config dir in the container to `/root/.flax`  (e.g. `-v /path/to/storage/:/root/.flax`)
 * Set initial `flax keys add` method:
