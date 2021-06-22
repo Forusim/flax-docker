@@ -1,60 +1,32 @@
-# Official Chia Docker Container
+![](https://flaxnetwork.org/logo.svg)
 
-## Basic Startup
-```
-docker run --name <container-name> -d ghcr.io/chia-network/chia:latest
-(optional -v /path/to/plots:/plots)
-```
-#### set the timezone for the container (optional, defaults to UTC)
-Timezones can be configured using the `TZ` env variable. A list of supported time zones can be found [here](http://manpages.ubuntu.com/manpages/focal/man3/DateTime::TimeZone::Catalog.3pm.html)
-```
--e TZ="America/Chicago"
-```
+# Flax Docker Container
+https://flaxnetwork.org/
+
 ## Configuration
+Required configuration:
+* Bind mounting a host plot dir in the container to `/plots`  (e.g. `-v /path/to/hdd/storage/:/plots`)
+* Bind mounting a host config dir in the container to `/root/.flax`  (e.g. `-v /path/to/storage/:/root/.flax`)
+* Set initial `flax keys add` method:
+  * Manual input from docker shell via `-e KEYS=type` (recommended)
+  * Copy from existing farmer via `-e KEYS=copy` and `-e CA=/path/to/mainnet/config/ssl/ca/` 
+  * Add key from mnemonic text file via `-e KEYS=/path/to/mnemonic.txt`
+  * Generate new keys (default)
 
-You can modify the behavior of your Chia container by setting specific environment variables.
+Optional configuration:
+* Pass multiple plot directories via PATH-style colon-separated directories (.e.g. `-e plots_dir=/plots/01:/plots/02:/plots/03`)
+* Set desired time zone via environment (e.g. `-e TZ=Europe/Berlin`)
 
-To use your own keys pass as arguments on startup (post 1.0.2 pre 1.0.2 must manually pass as shown below)
-```
--v /path/to/key/file:/path/in/container -e keys="/path/in/container"
-```
-or pass keys into the running container
-```
-docker exec -it <container-name> venv/bin/chia keys add
-```
-alternatively you can pass in your local keychain, if you have previously deployed chia with these keys on the host machine
-```
--v ~/.local/share/python_keyring/:/root/.local/share/python_keyring/
-```
+On first start with recommended `-e KEYS=type`:
+* Open docker shell `docker exec -it <containerid> sh`
+* Enter `flax keys add`
+* Paste space-separated mnemonic words
+* Enter `flax wallet show`
+* Press `S` to skip restore from backup
+* Restart docker cotainer
 
-To start a farmer only node pass
-```
--e farmer="true"
-```
-
-To start a harvester only node pass
-```
--e harvester="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container" -e keys="copy"
-```
-
-The `plots_dir` environment variable can be used to specify the directory containing the plots, it supports PATH-style colon-separated directories.
-
-#### or run commands externally with venv (this works for most chia XYZ commands)
-```
-docker exec -it chia venv/bin/chia plots add -d /plots
-```
-
-#### status from outside the container
-```
-docker exec -it chia venv/bin/chia show -s -c
-```
-
-#### Connect to testnet?
-```
-docker run -d --expose=58444 --expose=8555 -e testnet=true --name <container-name> ghcr.io/chia-network/chia:latest
-```
-
-#### Need a wallet?
-```
-docker exec -it chia-farmer1 venv/bin/chia wallet show (follow the prompts)
-```
+## Operation
+* Open docker shell `docker exec -it <containerid> sh`
+* Check synchronization `flax show -s -c`
+* Check farming `flax farm summary`
+* Check balance `flax wallet show summary` 
