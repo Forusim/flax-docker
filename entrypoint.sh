@@ -16,6 +16,7 @@ if [[ $(flax keys show | wc -l) -lt 5 ]]; then
       flax init -c ${ca}
       fi
     elif [[ ${keys} == "type" ]]; then
+      flax init
       echo "Call from docker shell: flax keys add"
       echo "Restart the container after mnemonic input"
     else
