@@ -22,9 +22,9 @@ On first start with recommended `-e KEYS=type`:
 * Open docker shell `docker exec -it <containerid> sh`
 * Enter `flax keys add`
 * Paste space-separated mnemonic words
+* Restart docker cotainer
 * Enter `flax wallet show`
 * Press `S` to skip restore from backup
-* Restart docker cotainer
 
 ## Operation
 * Open docker shell `docker exec -it <containerid> sh`
