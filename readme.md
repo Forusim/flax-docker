@@ -30,4 +30,4 @@ On first start with recommended `-e KEYS=type`:
 * Open docker shell `docker exec -it <containerid> sh`
 * Check synchronization `flax show -s -c`
 * Check farming `flax farm summary`
-* Check balance `flax wallet show summary` 
+* Check balance `flax wallet show` 
