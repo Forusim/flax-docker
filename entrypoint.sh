@@ -22,6 +22,8 @@ if [[ $(flax keys show | wc -l) -lt 5 ]]; then
     else
       flax init && flax keys add -f ${keys}
     fi
+    
+    sed -i 's/localhost/127.0.0.1/g' ~/.flax/mainnet/config/config.yaml
 else
     for p in ${plots_dir//:/ }; do
         mkdir -p ${p}
@@ -30,8 +32,6 @@ else
         fi
         flax plots add -d ${p}
     done
-
-    sed -i 's/localhost/127.0.0.1/g' ~/.flax/mainnet/config/config.yaml
 
     if [[ ${farmer} == 'true' ]]; then
       flax start farmer-only
@@ -48,4 +48,13 @@ else
     fi
 fi
 
-while true; do sleep 30; done;
+finish () {
+    echo "$(date): Shutting down flax"
+    flax stop all
+    exit 0
+}
+
+trap finish SIGTERM SIGINT SIGQUIT
+
+sleep infinity &
+wait $!
