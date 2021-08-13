@@ -3,8 +3,6 @@ FROM ubuntu:latest
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG BRANCH="main"
 
-EXPOSE 6888
-
 ENV keys="generate"
 ENV harvester="false"
 ENV farmer="false"
@@ -22,6 +20,7 @@ RUN git clone --branch ${BRANCH} https://github.com/Flax-Network/flax-blockchain
 
 ENV PATH=/flax-blockchain/venv/bin/:$PATH
 
+EXPOSE 6888
 WORKDIR /flax-blockchain
 
 COPY ./entrypoint.sh entrypoint.sh
